@@ -1,0 +1,61 @@
+<configuration>
+	<!-- Map-Reduce配置文件 -->
+
+	<!-- http://hadoop.apache.org/docs/r2.7.7/hadoop-yarn/hadoop-yarn-common/yarn-default.xml 找对应参数 -->	
+	
+	<property>
+		<!-- 开启resourcemanager高可用 -->
+		<name>yarn.resourcemanager.ha.enabled</name>
+		<value>true</value>
+	</property>
+
+	<property>
+		<!-- 定义两个角色，代表不同的resourcemanager主机 -->
+		<name>yarn.resourcemanager.ha.rm-ids</name>
+		<value>rm1,rm2</value>
+	</property>
+
+	<property>
+		<!-- resourcemanager故障时自动切换 -->
+		<name>yarn.resourcemanager.recovery.enabled</name>
+		<value>true</value>
+	</property>
+
+	<property>
+		<!-- resourcemanager使用管理软件 -->
+		<name>yarn.resourcemanager.store.class</name>
+		<value>org.apache.hadoop.yarn.server.resourcemanager.recovery.ZKRMStateStore</value>
+	</property>
+
+	<property>
+		<!-- 指定zookeeper集群 -->
+		<name>yarn.resourcemanager.zk-address</name>
+		<value>node1:2181,node2:2181,node3:2181</value>
+	</property>
+
+	<property>
+		<!-- resourcemanager集群的id -->
+		<name>yarn.resourcemanager.cluster-id</name>
+		<value>yarn-ha</value>
+	</property>
+
+	<property>
+		<!-- 定义角色对应的主机 -->
+		<name>yarn.resourcemanager.hostname.rm1</name>
+		<value>nn01</value>
+	</property>
+
+	<property>
+		<!-- 定义角色对应的主机 -->
+		<name>yarn.resourcemanager.hostname.rm2</name>
+		<value>nn02</value>
+	</property>
+
+	<property>
+		<name>yarn.nodemanager.aux-services</name>
+		<value>mapreduce_shuffle</value> 	<!-- 官方提供的框架 -->
+		<!-- <description> nodemanager使用什么计算框架，计算框架的名称，问开发人员所使用的框架是什么 </description>  -->
+	</property>
+
+
+</configuration>

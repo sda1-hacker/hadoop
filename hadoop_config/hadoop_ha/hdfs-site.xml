@@ -1,0 +1,91 @@
+<configuration>
+	<!-- HDFS配置文件 -->
+
+	<!-- http://hadoop.apache.org/docs/r2.7.7/hadoop-project-dist/hadoop-hdfs/hdfs-default.xml 找对应参数 -->	
+	
+	<property>
+		<!-- 定义，namenode组的名称，core-site.xml中使用就在这里定义 -->
+		<name>dfs.nameservices</name>
+		<value>namenodeGroup</value>
+	</property>
+
+	<property>
+		<!-- 定义namenodeGroup组中的角色，相当于为主机起的名字 -->
+		<name>dfs.ha.namenodes.namenodeGroup</name>
+		<value>nn1,nn2</value> <!-- 角色名，自定义 -->
+	</property>
+
+	<property>
+		<!-- 定义角色对应的主机  角色nn1对应nn01主机 -->
+		<name>dfs.namenode.rpc-address.namenodeGroup.nn1</name>
+		<value>nn01:8020</value> <!-- 角色对应的主机以及端口 -->
+	</property>
+
+	<property>
+		<!-- 定义角色对应的主机  角色nn2对应nn02主机 -->
+		<name>dfs.namenode.rpc-address.namenodeGroup.nn2</name>
+		<value>nn02:8020</value> <!-- 角色对应的主机以及端口 -->
+	</property>
+
+	<property>
+		<!-- 定义namenode，nn1对应的主机的namenode是nn01的50070 -->
+		<name>dfs.namenode.http-address.namenodeGroup.nn1</name>
+		<value>nn01:50070</value>
+	</property>
+
+	<property>
+		<!-- 定义namenode，nn2对应的主机的namenode是nn02的50070 -->
+		<name>dfs.namenode.http-address.namenodeGroup.nn2</name>
+		<value>nn02:50070</value>
+	</property>
+
+
+	<property>
+		<!-- JNS，用于同步fsedits数据变更日志 -->
+		<name>dfs.namenode.shared.edits.dir</name>
+		<value>qjournal://node1:8485;node2:8485;node3:8485/fsedits_log</value>
+	</property>
+
+	<property>
+		<!-- 保存数据变更日志的目录 -->
+		<name>dfs.journalnode.edits.dir</name>
+		<value>/var/hadoop/journal</value>
+	</property>
+
+	<property>
+		<!-- 高可用软件，zookeeperFailoverController -->
+		<name>dfs.client.failover.proxy.provider.namenodeGroup</name>
+		<value>org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider</value>
+	</property>
+
+	<property>
+		<!-- 管理standby备份主机的方法,ssh -->
+		<name>dfs.ha.fencing.methods</name>
+		<value>sshfence</value>
+	</property>
+
+	<property>
+		<!-- 秘钥存放位置 -->
+		<name>dfs.ha.fencing.ssh.private-key-files</name>
+		<value>/root/.ssh/id_rsa</value>
+	</property>
+
+	<property>
+		<!-- 故障时，是否自主切换主从 -->
+		<name>dfs.ha.automatic-failover.enabled</name>
+		<value>true</value>
+	</property>
+
+	<property>
+		<name>dfs.replication</name>
+		<value>3</value>
+		<!-- <description> 副本策略，数据存几份，3份中有2份备份数据 </description>  -->
+	</property>
+
+	<property>
+		<!-- 为了删除datanode节点， 写在这个文件中的主机在删除前会自动迁移数据-->
+		<name>dfs.hosts.exclude</name>
+		<value>/usr/local/hadoop/etc/hadoop/exclude</value>
+	</property>
+
+</configuration>

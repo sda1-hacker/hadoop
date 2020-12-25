@@ -1,0 +1,4 @@
+com\hadoop\demo\job\WordCountJob.class
+com\hadoop\demo\reducer\WordCountReducer.class
+com\hadoop\demo\mapper\WordCountMapper.class
+com\hadoop\demo\HdfsTest.class

@@ -1,0 +1,34 @@
+1. 合并小的block为一个split
+split的个数等于mapTask的个数
+
+split的大小默认等于一个block块的大小128M
+
+如果split > block，会出现跨机器去读取block的情况
+
+如果split < (block/2) 那么对于一个block来说就要为它开启多个mapTask
+
+如果 (block/2) < split < block 第一个mapTask会读取本机的block, 第二个mapTask就会跨机器去读取另外一个block从而满足split的大小
+
+所以：split的实际大小总是和一个block相同的
+
+如果有大量的小文件, 每一个小文件对应一个block, 那么就会导致有大量的split, 从而导致有大量的mapTask
+可以将 多个比较小的block合并成一个split从而减小mapTask的个数
+
+使用CombineTextInputFormat 代替 TextInputFormat 合计将block进行合并
+// 使用CombineFileInputFormat将 总和不超过 10MB的block 合并成一个 split
+// job.setInputFormatClass(CombineFileInputFormat.class);
+// CombineFileInputFormat.setMaxInputSplitSize(job, 10*1024*1024);
+// FileInputFormat.addInputPath(job, new Path("/input/subject.txt"));
+
+
+2. mapTask过程中的局部reduce  -- Combiner
+如果mapTask之后得到的结果 k, [v1, v2, v3, ... V1000000000] value集合中的元素个数很多。
+
+那么就会导致reduceTask在计算的时候压力很大。
+
+可以在map阶段对数据进行一些处理， 让mapTask输出的结果对 value集合进行合并
+
+// job.setCombinerClass(PartitionReducer.class);
+
+mapTask在完成排序之后, 会开启Combiner, 对排序好的数据进行分组, 合并, 调用reducer的reduce方法
+处理之后会将数据输出到本地的临时文件中

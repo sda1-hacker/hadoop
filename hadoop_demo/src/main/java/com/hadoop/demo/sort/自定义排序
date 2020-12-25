@@ -1,0 +1,31 @@
+自定义Writable 通过实现 WritableComparable接口的 compareTo 函数来实现根据某个字段进行排序
+
+如果自定义序列化类型中有多个字段，
+在compareTo这个方法中，需要将每个字段都进行一个简单的排序，
+如果compareTo返回0 则认为是两个相同的key
+
+例子：
+
+key(科目, 成绩)           val
+语文,100      张三
+数学,100      李四
+
+
+如果只按照成绩进行排序，
+
+int compareTo(Object that) {
+    return this.score - that.score;
+}
+
+就会出现
+语文,100      [张三, 李四]
+或者
+数学,100      [张三, 李四]
+
+int compareTo(Object that) {
+    if (this.score != that.score) {
+        return this.score - that.score;
+    } else {
+        return this.subject.compareTo(that.subject);   // 随便排, 只要排了就行
+    }
+}

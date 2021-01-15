@@ -82,6 +82,28 @@
             <version>2.7.1</version>
         </dependency>
 
+        <!-- hive 相关依赖 -->
+        <dependency>
+            <groupId>org.apache.hive</groupId>
+            <artifactId>hive-exec</artifactId>
+            <version>1.2.1</version>
+        </dependency>
+
+        <!-- flum相关依赖 -->
+        <dependency>
+            <groupId>org.apache.flume</groupId>
+            <artifactId>flume-ng-core</artifactId>
+            <version>1.9.0</version>
+        </dependency>
+
+        <!-- producer kafka相关依赖 -->
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-clients</artifactId>
+            <version>0.11.0.0</version>
+        </dependency>
+
+
     </dependencies>
 
     <build>
@@ -120,6 +142,18 @@
             </plugin>
             <!-- 依次执行这三个命令就可以了。 -->
             <!-- clean, package, wagon:upload-single -->
+
+            <!-- 对指定的目录打jar包 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    <includes>
+                        <include>**/hive/**</include>
+                    </includes>
+                </configuration>
+            </plugin>
         </plugins>
 
     </build>

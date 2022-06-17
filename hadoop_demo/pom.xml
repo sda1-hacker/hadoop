@@ -70,7 +70,7 @@
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
-            <version>1.2.58</version>
+            <version>1.2.83</version>
         </dependency>
 
         <!-- 使用zookeeper的时候需要将源码下的 log4j.properties 导入到本地, 非必要 -->
